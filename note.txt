@@ -1,0 +1,10 @@
+# javax.xml.parsers.랑 org.w3c.dom 차이
+https://parkys.tistory.com/entry/XML%EB%AC%B8%EC%84%9C%EB%A5%BC-Document-%EB%A1%9C-%ED%8C%8C%EC%8B%B1%ED%95%B4%EC%84%9C-%EC%9A%94%EC%86%8C%EB%A5%BC-%EA%B5%AC%ED%95%98%EA%B8%B0-DocumentBuilderFactory-DocumentBuilder-getDocumentElement
+
+# jsoup File, http 파싱 방법
+https://offbyone.tistory.com/116
+
+# Suku 파싱
+https://github.com/Jionee/ku_enrollment/blob/master/app/src/main/java/com/konkuk/suku/parseData.java
+
+# xml을 새로 write 할 때 쓰이는 document와 element들은 org.w3c.dom로 태그해주어야 한다.
