@@ -3,6 +3,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.snu.ids.kkma.index.Keyword;
+import org.snu.ids.kkma.index.KeywordExtractor;
+import org.snu.ids.kkma.index.KeywordList;
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,6 +25,7 @@ public class main {
         File[] fileList = path.listFiles(); //File name list
 
         ArrayList<Item> itemList = new ArrayList<>();
+        ArrayList<Item> itemListKkma = new ArrayList<>();
 
         if(fileList.length >0) {
             for(int i=1;i<fileList.length;i++) {
@@ -29,11 +33,30 @@ public class main {
                 addList(fileList[i], itemList);
             }
         }
+        WriteXml(itemList,"htmlSet/collection.xml");
 
-        WriteXml(itemList);
+        //3주차 : body에 들어가 있는 애 형태소 분석해서 다른 item으로 만들어서 WriteXml 한 번 더 돌리기
+        for(int i=1;i<itemList.size();i++){
+            String newBody = kkmaString(itemList, i);
+            itemListKkma.add(new Item(itemList.get(i).name,newBody));
+        }
+        WriteXml(itemListKkma, "htmlSet/index.xml");
     }
 
-    private static void WriteXml(ArrayList<Item> itemList) throws ParserConfigurationException, FileNotFoundException, TransformerException {
+    private static String kkmaString(ArrayList<Item> itemList, int i) {
+        String body = itemList.get(i).body;
+        KeywordExtractor ke = new KeywordExtractor();
+        KeywordList kl = ke.extractKeyword(body,true); //extract keyword
+        String newBody = "";
+        for (int k=0;k<kl.size();k++){
+            Keyword kwrd = kl.get(k);
+            newBody+=kwrd.getString() + ":" + kwrd.getCnt() + "#";
+        }
+        //System.out.println(newBody);
+        return newBody;
+    }
+
+    private static void WriteXml(ArrayList<Item> itemList,String address) throws ParserConfigurationException, FileNotFoundException, TransformerException {
         //make Collect Xml
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -46,7 +69,7 @@ public class main {
         //list만큼 for문 돌리기
         int index=0;
         for(Item item: itemList){
-            System.out.println(index+" "+item.name);
+            //System.out.println(index+" "+item.name);
             org.w3c.dom.Element elementDoc = doc.createElement("doc");
             org.w3c.dom.Element elementTitle = doc.createElement("title");
             org.w3c.dom.Element elementBody = doc.createElement("body");
@@ -67,7 +90,7 @@ public class main {
         transformer.setOutputProperty(OutputKeys.ENCODING,"UTF-8");
 
         DOMSource source = new DOMSource((Node) doc);
-        StreamResult result = new StreamResult(new FileOutputStream(new File("htmlSet/collection.xml")));
+        StreamResult result = new StreamResult(new FileOutputStream(new File( address )));
 
         transformer.transform(source,result);
     }
@@ -86,6 +109,7 @@ public class main {
 
         itemList.add(new Item(name,body)); //store by Object
     }
+
 
 }
 
