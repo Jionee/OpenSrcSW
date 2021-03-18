@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class main {
+public class kuir {
     public static void main(String[] args) throws IOException ,ParserConfigurationException, TransformerException{
 
         File path = new File("htmlSet");
@@ -27,23 +27,30 @@ public class main {
         ArrayList<Item> itemList = new ArrayList<>();
         ArrayList<Item> itemListKkma = new ArrayList<>();
 
+        makeCollection mcCollection = new makeCollection();
+        makeCollection mcKeyword = new makeCollection();
+        //2주차
         if(fileList.length >0) {
-            for(int i=1;i<fileList.length;i++) {
-                if(fileList[i].equals("htmlSet\\collention.xml")) continue;
-                addList(fileList[i], itemList);
+            for(int i=0;i<fileList.length;i++) {
+                if(fileList[i].equals("src\\xmlSet\\collention.xml")) continue;
+                else if(fileList[i].equals("src\\xmlSet\\index.xml")) continue;
+                System.out.println("File "+fileList[i]);
+                mcCollection.addList(fileList[i], itemList);
             }
         }
-        WriteXml(itemList,"htmlSet/collection.xml");
+        mcCollection.WriteXml(itemList,"src\\xmlSet\\collection.xml");
 
         //3주차 : body에 들어가 있는 애 형태소 분석해서 다른 item으로 만들어서 WriteXml 한 번 더 돌리기
-        for(int i=1;i<itemList.size();i++){
-            String newBody = kkmaString(itemList, i);
+        makeKeyword mk = new makeKeyword();
+
+        for(int i=0;i<itemList.size();i++){
+            String newBody = mk.kkmaString(itemList, i);
             itemListKkma.add(new Item(itemList.get(i).name,newBody));
         }
-        WriteXml(itemListKkma, "htmlSet/index.xml");
+        mcKeyword.WriteXml(itemListKkma, "src\\xmlSet\\index.xml");
     }
 
-    private static String kkmaString(ArrayList<Item> itemList, int i) {
+    /*private static String kkmaString(ArrayList<Item> itemList, int i) {
         String body = itemList.get(i).body;
         KeywordExtractor ke = new KeywordExtractor();
         KeywordList kl = ke.extractKeyword(body,true); //extract keyword
@@ -54,9 +61,9 @@ public class main {
         }
         //System.out.println(newBody);
         return newBody;
-    }
+    }*/
 
-    private static void WriteXml(ArrayList<Item> itemList,String address) throws ParserConfigurationException, FileNotFoundException, TransformerException {
+   /* private static void WriteXml(ArrayList<Item> itemList,String address) throws ParserConfigurationException, FileNotFoundException, TransformerException {
         //make Collect Xml
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -105,10 +112,10 @@ public class main {
         String name = item.select("title").text();
         String body = item.select("#content").text();
 
-        /*System.out.println("name --> "+name); System.out.println("body --> "+body);*/
+        *//*System.out.println("name --> "+name); System.out.println("body --> "+body);*//*
 
         itemList.add(new Item(name,body)); //store by Object
-    }
+    }*/
 
 
 }
