@@ -15,11 +15,11 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class kuir {
-    public static void main(String[] args) throws IOException ,ParserConfigurationException, TransformerException{
+    public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
         String argument = args[0];
         ArrayList<Item> itemList = new ArrayList<>();
@@ -27,6 +27,7 @@ public class kuir {
 
         makeCollection mc = new makeCollection();
         makeKeyword mk = new makeKeyword();
+        makeInvertedFile mi = new makeInvertedFile();
         System.out.println(argument);
 
         //2주차
@@ -40,9 +41,17 @@ public class kuir {
             File path = new File(argument);
             mk.mkKeyword(itemListKkma, path, mc);
         }
+
+        //3주차
+        else if(argument.equals("src/xmlSet/index.xml")){
+            File path2 = new File("src/xmlSet/collection.xml");
+            mk.mkKeyword(itemListKkma, path2, mc);
+
+            File path = new File(argument);
+            HashMap<String, ArrayList<String>> result = mi.readFile(path);
+            mi.writeInvertedFile(argument, result);
+        }
     }
-
-
 
 
 }
