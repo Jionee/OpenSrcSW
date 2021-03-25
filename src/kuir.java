@@ -1,59 +1,43 @@
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.snu.ids.kkma.index.Keyword;
-import org.snu.ids.kkma.index.KeywordExtractor;
-import org.snu.ids.kkma.index.KeywordList;
-import org.w3c.dom.Node;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class kuir {
     public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
-        String argument = args[0];
+        String argument1 = args[0];
+        String argument2 = args[1];
         ArrayList<Item> itemList = new ArrayList<>();
         ArrayList<Item> itemListKkma = new ArrayList<>();
 
         makeCollection mc = new makeCollection();
         makeKeyword mk = new makeKeyword();
-        makeInvertedFile mi = new makeInvertedFile();
-        System.out.println(argument);
+        indexer mi = new indexer();
+        System.out.println(argument1 + " " + argument2);
 
         //2주차
-        if(argument.equals("htmlSet")){
+        //-c htmlSet
+        if(argument1.equals("-c")){
             File path = new File("htmlSet");
             mc.mcCollection(itemList, path);
         }
 
         //3주차 : collection.xml 읽고 body에 들어가 있는 애 형태소 분석해서 다른 item으로 만들어서 WriteXml 한 번 더 돌리기
-        else if(argument.equals("src/xmlSet/collection.xml")){
-            File path = new File(argument);
+        //-k src/xmlSet/collection.xml
+        else if(argument1.equals("-k")){
+            File path = new File(argument2);
             mk.mkKeyword(itemListKkma, path, mc);
         }
 
-        //3주차
-        else if(argument.equals("src/xmlSet/index.xml")){
-            File path2 = new File("src/xmlSet/collection.xml");
-            mk.mkKeyword(itemListKkma, path2, mc);
-
-            File path = new File(argument);
+        //4주차
+        //-i src/xmlSet/index.xml
+        else if(argument1.equals("-i")){
+            File path = new File(argument2);
             HashMap<String, ArrayList<String>> result = mi.readFile(path);
-            mi.writeInvertedFile(argument, result);
+            mi.writeInvertedFile(result);
         }
     }
-
-
 }
 
     class Item {

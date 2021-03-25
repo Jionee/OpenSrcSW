@@ -6,30 +6,43 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.util.*;
 
-public class makeInvertedFile {
-    public static void writeInvertedFile(String argument, HashMap<String, ArrayList<String>> result) throws IOException, ClassNotFoundException {
-        FileOutputStream fileStream = new FileOutputStream(argument);
+public class indexer {
+    public static void writeInvertedFile(HashMap<String, ArrayList<String>> result) throws IOException, ClassNotFoundException {
+        FileOutputStream fileStream = new FileOutputStream("src/xmlSet/index.post");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
 
         HashMap tmpHash = new HashMap();
+        ArrayList<String> tmpValue = new ArrayList<>();
+
         for(String key: result.keySet()){
             ArrayList<String> valueList = result.get(key);
             for(String value:valueList){
                 //tmpHash.put(key,value);
+                tmpValue = new ArrayList<>();
+
                 if(tmpHash.containsKey(key)){
-                    tmpHash.put(key,tmpHash.get(key)+" "+value);
+                    ArrayList<String> tmp = (ArrayList<String>) tmpHash.get(key);
+                    for(String string:tmp){
+                        tmpValue.add(string);
+                    }
+                    String[] tmpSet = value.split(":");
+                    tmpValue.add(tmpSet[0]);
+                    tmpValue.add(tmpSet[1]);
+                    tmpHash.put(key,tmpValue);
                 }
                 else{
-                    tmpHash.put(key,value);
+                    String[] tmpSet = value.split(":");
+                    tmpValue.add(tmpSet[0]);
+                    tmpValue.add(tmpSet[1]);
+                    tmpHash.put(key,tmpValue);
                 }
             }
         }
-
         objectOutputStream.writeObject(tmpHash);
         objectOutputStream.close();
 
         //====확인====
-        FileInputStream fileInputStream = new FileInputStream(argument);
+        FileInputStream fileInputStream = new FileInputStream("src/xmlSet/index.post");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
         Object object = objectInputStream.readObject();
@@ -40,7 +53,7 @@ public class makeInvertedFile {
 
         while(it.hasNext()){
             String key = it.next();
-            String value = (String) hashMap.get(key);
+            ArrayList<String> value = (ArrayList<String>) hashMap.get(key);
             System.out.println(key + " -> "+ value);
         }
     }
@@ -108,7 +121,7 @@ public class makeInvertedFile {
                     //몇 개의 문서에 존재하는지
                     double cal = Double.parseDouble(item.get(key)) * Math.log10( 5 / (double) frequency.get(key));
                     String first = key;
-                    String second = index + " " + Double.toString(cal);
+                    String second = index + ":" + Double.toString(cal);
                     //System.out.println(" ==> "+key+" 해당빈도수 : "+Double.parseDouble(item.get(key))+" 몇개문서 : "+(double)frequency.get(key)+ " cal : "+cal);
 
                     ArrayList<String> newStringList = new ArrayList<>();
