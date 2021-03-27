@@ -66,7 +66,7 @@ public class indexer {
         Elements docs = document.getElementsByTag("doc");
         //System.out.println("docs --> "+docs);
         HashMap<String, ArrayList<String>> result = getResultHashMap(docs);
-        System.out.println("RESULT ==> "+result);
+        //System.out.println("RESULT ==> "+result);
         return result;
 
     }
@@ -119,7 +119,8 @@ public class indexer {
                 for(String key : item.keySet()){
                     int number = 0;
                     //몇 개의 문서에 존재하는지
-                    double cal = Double.parseDouble(item.get(key)) * Math.log10( 5 / (double) frequency.get(key));
+                    double cal = Double.parseDouble(item.get(key)) * Math.log( 5 / (double) frequency.get(key));
+                    cal = Math.round(cal*100)/100.0;
                     String first = key;
                     String second = index + ":" + Double.toString(cal);
                     //System.out.println(" ==> "+key+" 해당빈도수 : "+Double.parseDouble(item.get(key))+" 몇개문서 : "+(double)frequency.get(key)+ " cal : "+cal);
