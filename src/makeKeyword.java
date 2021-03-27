@@ -28,12 +28,18 @@ public class makeKeyword {
 
     public static String kkmaString(ArrayList<Item> itemList, int i) {
         String body = itemList.get(i).body;
+        System.out.println(i+" ==>"+body);
         KeywordExtractor ke = new KeywordExtractor();
         KeywordList kl = ke.extractKeyword(body,true); //extract keyword
         String newBody = "";
         for (int k=0;k<kl.size();k++){
             Keyword kwrd = kl.get(k);
-            newBody+=kwrd.getString() + ":" + kwrd.getCnt() + "#";
+            if(kwrd.getString().equals(itemList.get(i).name)){
+                newBody+=kwrd.getString() + ":" + (kwrd.getCnt()-1) + "#";
+            }
+            else{
+                newBody+=kwrd.getString() + ":" + kwrd.getCnt() + "#";
+            }
         }
         //System.out.println(newBody);
         return newBody;
@@ -43,7 +49,6 @@ public class makeKeyword {
         //Read file by String
         File input = new File(file.getPath());
         Document document = Jsoup.parse(input, "UTF-8", "http://example.com/");
-
         Elements docs = document.getElementsByTag("doc");
         //System.out.println("docs --> "+docs);
         //doc마다 돌아가면서 title, body 떼서 아이템에 저장하기
