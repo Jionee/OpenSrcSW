@@ -89,6 +89,7 @@ public class searcher {
             resultCalc.add(Math.round(result0*100)/100.0);
         }
         System.out.println(resultCalc);
+
         return resultCalc;
     }
 

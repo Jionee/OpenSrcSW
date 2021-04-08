@@ -6,14 +6,17 @@ import java.util.*;
 public class kuir {
     public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, ClassNotFoundException {
 
-        String argument1 = args[0];
-        String argument2 = args[1];
+        String argument1 = null,argument2 = null,argument3 = null,argument4 = null;
+        argument1 = args[0];
+        argument2 = args[1];
+
         ArrayList<Item> itemList = new ArrayList<>();
         ArrayList<Item> itemListKkma = new ArrayList<>();
 
         makeCollection mc = new makeCollection();
         makeKeyword mk = new makeKeyword();
         indexer mi = new indexer();
+        searcher sc = new searcher();
         System.out.println(argument1 + " " + argument2);
 
         //2주차
@@ -36,6 +39,19 @@ public class kuir {
             File path = new File(argument2);
             HashMap<String, ArrayList<String>> result = mi.readFile(path);
             mi.writeInvertedFile(result);
+        }
+
+        //5주차
+        //-s src/xmlSet/index.post -q "라면에는 면,분말 스프가 있다."
+        else if(argument1.equals("-s")){
+            argument3 = args[2];
+            if(argument3.equals("-q")){
+                argument4 = args[3];
+            }
+            File path = new File(argument2);
+            String query = argument4;
+            System.out.println(argument1+argument2+argument3+argument4);
+            sc.CalcSim(path,query);
         }
     }
 }
