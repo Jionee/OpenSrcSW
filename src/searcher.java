@@ -39,7 +39,7 @@ public class searcher {
         }
     }
 
-    private ArrayList<Double> getInnerProduct(File path, String query) throws IOException, ClassNotFoundException {
+    private ArrayList<Double> getResultCalc(File path, String query) throws IOException, ClassNotFoundException {
         //kkmastring 분석
         KeywordExtractor ke = new KeywordExtractor();
         KeywordList kl = ke.extractKeyword(query,true); //extract keyword
