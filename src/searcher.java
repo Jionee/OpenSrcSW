@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class searcher {
     public void CalcSim(File path, String query) throws IOException, ClassNotFoundException {
         //쿼리 kkmastring 분석, index.post ==> 각 문서별 유사도 계산
-        ArrayList<Double> resultCalc = getResultCalc(path, query);
+        ArrayList<Double> resultCalc = getInnerProduct(path, query);
 
         //title가져오기
         File path2 = new File("src/xmlSet/index.xml");
