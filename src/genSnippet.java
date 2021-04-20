@@ -10,7 +10,9 @@ public class genSnippet {
         File path = new File(argument2);
         Document document = Jsoup.parse(path, "UTF-8", "http://example.com/");
         //파일 읽어오기
-        System.out.println(document); //document는 엔터가 띄어쓰기와 동일해서 사용 불가.
+        System.out.println(document);
+
+        //document는 엔터가 띄어쓰기와 동일해서 사용 불가하여 임시로 tmpList를 생성하여 진행하였습니다.
 
 
         String query = argument4;
@@ -35,7 +37,7 @@ public class genSnippet {
 
         String[] splitQuery = query.split(" ");
         for(int i=0;i<tmpSplitList.size();i++){
-            if(tmpSplitList.get(i).contains(splitQuery)){
+            if(tmpSplitList.get(i).contains(splitQuery)){ //count를 세기 위해 for문 돌리기
 
             }
         }
