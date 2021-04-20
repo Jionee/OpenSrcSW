@@ -1,6 +1,10 @@
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class kuir {
@@ -18,6 +22,10 @@ public class kuir {
         indexer mi = new indexer();
         searcher sc = new searcher();
         System.out.println(argument1 + " " + argument2);
+
+
+        // 중간고사
+        genSnippet gs = new genSnippet();
 
         //2주차
         //-c htmlSet
@@ -53,7 +61,23 @@ public class kuir {
             System.out.println(argument1+argument2+argument3+argument4);
             sc.CalcSim(path,query);
         }
+
+        //중간고사
+        //-f src/input.txt -q "라면 반죽 소금 초밥 채소"
+        else if(argument1.equals("-f")){
+            //input.txt를 읽어서 입력한 키워드가 가장 많이 포함된 라인을 출력한다.
+            //넣어주는 스트링
+            argument3 = args[2];
+            if(argument3.equals("-q")){
+                argument4 = args[3];
+            }
+            gs.gitSnippetFunction(argument2, argument4);
+
+        }
+
     }
+
+
 }
 
     class Item {
